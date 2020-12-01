@@ -1,8 +1,8 @@
 export default class Service {
     constructor() {
-        this._apiBase = 'https://www.anapioficeandfire.com/api';
+        this._apiBase = 'https://www.anapioficeandfire.com/api'
     }
-    getData = async (url) => {
+    async getData (url) {
         const res = await fetch(`${this._apiBase}${url}`)
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status ${res.statur}`)
@@ -21,7 +21,9 @@ export default class Service {
     }
     
     async getAllCharacters() {
-        const chars = await this.getData(`/characters?page=5&pageSize=10`)
+        // max 214
+        const id = await Math.floor(Math.random() * 215)
+        const chars = await this.getData(`/characters?page=${id}`)
         return chars.map(this._transformCharacter)
     }
     
@@ -39,14 +41,14 @@ export default class Service {
         const  house = await this.getData(`/houses/${id}/`)
         return this._transformHouse(house)
     }
-
     _transformCharacter(char) {
         return {
             name: char.name || 'not indicated',
             gender: char.gender || 'not indicated',
             born: char.born || 'not indicated',
             died: char.died || 'not indicated',
-            culture: char.culture || 'not indicated'
+            culture: char.culture || 'not indicated',
+            url: char.url
         }
     }
 

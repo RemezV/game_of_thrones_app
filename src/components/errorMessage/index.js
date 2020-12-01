@@ -5,8 +5,9 @@ import img from './error.jpg'
 const ErrorMessage = () => {
     return (
         <>  
-            <img src={img} alt='wrong'/>
             <span className="error-message">Something goes wrong...</span>
+            <img src={img} alt='wrong'/>
+            
         </>
     )
 }

@@ -5,15 +5,18 @@ import Spinner from '../spinner/spinner'
 import ErrorMessage from '../errorMessage'
 
 export default class RandomChar extends Component {
-    constructor() {
-        super()
-        this.updateCharacter()
-    }
     gotService = new Service()
     state = {
         char: {},
         loading: true,
         error: false
+    }
+    componentDidMount() {
+        this.updateCharacter()
+        this.refreshChar = setInterval(this.updateCharacter, 5000)
+    }
+    componentWillUnmount() {
+        clearInterval(this.refreshChar)
     }
     onCharLoaded = (char) => {
         this.setState({
@@ -30,8 +33,7 @@ export default class RandomChar extends Component {
     }
     updateCharacter = () => {
         // max 2138
-        // const id = Math.floor(Math.random() * 2139)
-        const id = 2139
+        const id = Math.floor(Math.random() * 2139)
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError)
@@ -42,14 +44,17 @@ export default class RandomChar extends Component {
 
         const errorMessage = error ? <ErrorMessage/> : null
         const spinner = loading ? <Spinner/> : null
-        const content = !(loading || error) ?  <View char={char}/> : null
+        const content = !(loading || error ) ?  <View char={char}/> : null
 
         return (
-            <div className="random-block rounded">
-                {errorMessage}
-                {spinner}
-                {content}
-            </div>
+            <>
+
+                <div className="random-block rounded">
+                    {errorMessage}
+                    {spinner}
+                    {content}
+                </div>
+            </>
         );
     }
 }
