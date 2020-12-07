@@ -1,25 +1,24 @@
-import React, {Component} from 'react';
-import './itemList.sass';
-import Service from '../../services/gotService'
+import React, {Component} from 'react'
+import './itemList.sass'
 import Spinner from '../spinner/spinner'
 
 export default class ItemList extends Component {
-    service = new Service()
     state = {
-        charList: null
+        itemList: null
     }
     componentDidMount(){
-        this.service.getAllCharacters()
-            .then(charList => this.setState({charList}))
+        const {getData} = this.props
+        getData()
+            .then(itemList => this.setState({itemList}))
         
     }
-    createItems = (charList) => {
-        return charList.map((item, i) => {
+    createItems = (itemList) => {
+        return itemList.map((item) => {
             return (
                 <li 
-                    key={[...item.url.match(/[$\d]+/)]}
+                    key={item.id}
                     className="list-group-item" 
-                    onClick={() => this.props.onItemSelect([...item.url.match(/[$\d]+/)])}
+                    onClick={() => this.props.onItemSelect(item.id)}
                 >
                     {item.name}
                 </li>
@@ -27,11 +26,11 @@ export default class ItemList extends Component {
         })
     }
     render() {
-        const {charList} = this.state
+        const {itemList} = this.state
 
-        if (!charList) return <Spinner/>
+        if (!itemList) return <Spinner/>
 
-        const items = this.createItems(charList)
+        const items = this.createItems(itemList)
 
         return (
             <ul className="item-list list-group">
