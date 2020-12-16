@@ -4,17 +4,26 @@ import ItemDetails, {Field} from '../../itemDetails/itemDetails'
 import ErrorMessage from '../../errorMessage'
 import Service from '../../../services/gotService'
 import InfoBlock from '../../infoBlock/infoBlock'
+import ElementsNav from '../../elementsNav/elementsNav'
 
 
 export default class CharactersPage extends React.Component {
     state = {
         selectedId: null,
         error: false,
+        selectedPage: 2,
+        pagesQuantity: Math.ceil(2138 / 10)
     }
     service = new Service()
 
     onItemSelect = (id) => {
         this.setState({selectedId: id})
+    }
+    renderItems = (page) => {
+        this.setState(() => {
+            return {selectedPage: page <= this.state.pagesQuantity ? page : 'no such page', selectedId: null}
+        })
+        
     }
     render() {
         if (this.state.error) return <ErrorMessage/>
@@ -22,6 +31,7 @@ export default class CharactersPage extends React.Component {
                 <ItemList 
                     onItemSelect={this.onItemSelect} 
                     getData={this.service.getAllCharacters}
+                    selectedPage={this.state.selectedPage}
                 />
             )
         const charDetails = (
@@ -32,7 +42,12 @@ export default class CharactersPage extends React.Component {
                 <Field field="culture" label="Culture"/>
             </ItemDetails>
         )
-        return (<InfoBlock leftRow={itemList} rightRow={charDetails}/>)
+        return (
+            <>
+                <ElementsNav pages={this.state.pagesQuantity} renderItems={this.renderItems} selectedPage={this.state.selectedPage}/>
+                <InfoBlock leftRow={itemList} rightRow={charDetails}/>
+            </>
+        )
 
     }
 }

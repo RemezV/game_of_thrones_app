@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Row, Container} from 'reactstrap';
+import {Container} from 'reactstrap';
 import Header from '../header/header';
 import ErrorMessage from '../errorMessage'
 import CharactersPage from '../pages/characterPage/characterPage'
@@ -33,15 +33,11 @@ class App extends React.Component {
                         <Header />
                     </Container>
                     <Container>
-                        <Row>
-                            <Col lg={{size: 5, offset: 0}}>
-                            <button 
-                                className="random"
-                                onClick={this.toggleRandom}
-                            >Random character</button>
-                                {randomChar}
-                            </Col>
-                        </Row>
+                        <button 
+                            className={this.state.random ? "random random_big" : "random"}
+                            onClick={this.toggleRandom}
+                        >Random character</button>
+                        {randomChar}
                         <Route path="/characters" exact component={CharactersPage}/>
                         <Route path="/books" exact component={BooksPage}/>
                         <Route path="/houses" exact component={HousesPage}/>

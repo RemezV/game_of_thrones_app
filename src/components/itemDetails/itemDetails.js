@@ -7,7 +7,7 @@ const Field = ({item, field, label}) => {
     return (
         <li className="list-group-item d-flex justify-content-between">
             <span className="term">{label}</span>
-            <span>{item[field]}</span>
+            <span className="term-value">{item[field]}</span>
         </li>
     )
 }
@@ -27,7 +27,10 @@ export default class ItemDetails extends Component {
     }
     updateItem = () => {
         const {itemId, page} = this.props
-        if (!itemId) return
+        if (itemId === null) {
+            this.setState({item: null})
+            return
+        }
         const service = new Service()
         if (page === 'books') {
             service.getBook(itemId)
@@ -43,8 +46,8 @@ export default class ItemDetails extends Component {
     }
     render() {
         const {item, loading} = this.state
-        if (!item) return (
-            <div className="char-details rounded">
+        if (item === null) return (
+            <div className="char-details">
                 <span className="unselected">Not selected</span>
             </div>
         )
@@ -52,11 +55,11 @@ export default class ItemDetails extends Component {
 
         return (loading) ? 
         (
-        <div className="char-details rounded">
+        <div className="char-details">
             <Spinner/>'
         </div>) :
         (
-            <div className="char-details rounded">
+            <div className="char-details">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
                     {React.Children.map(this.props.children, (child) => {
@@ -64,61 +67,6 @@ export default class ItemDetails extends Component {
                     })}
                 </ul>
             </div>
-        );
+        )
     }
 }
-// const Field = ({char, field, label}) => {
-//     return (
-//         <li className="list-group-item d-flex justify-content-between">
-//             <span className="term">{label}</span>
-//             <span>{char[field]}</span>
-//         </li>
-//     )
-// }
-
-// export {Field}
-
-// export default class CharDetails extends Component {
-//     state = {
-//         char: null,
-//         loading: true
-//     }
-//     componentDidMount() {
-//         this.updateChar()
-//     }
-//     componentDidUpdate(prevProps) {
-//         if (this.props.charId !== prevProps.charId) this.updateChar()
-//     }
-//     updateChar = () => {
-//         const {charId} = this.props
-//         if (!charId) return
-//         const service = new Service()
-//         service.getCharacter(charId)
-//             .then(char => this.setState({char, loading: false}))
-//     }
-//     render() {
-//         const {char, loading} = this.state
-//         if (!char) return (
-//             <div className="char-details rounded">
-//                 <span className="unselected">Character wasn't selected</span>
-//             </div>
-//         )
-//         const {name} = char
-
-//         return (loading) ? 
-//         (
-//         <div className="char-details rounded">
-//             <Spinner/>'
-//         </div>) :
-//         (
-//             <div className="char-details rounded">
-//                 <h4>{name}</h4>
-//                 <ul className="list-group list-group-flush">
-//                     {React.Children.map(this.props.children, (child) => {
-//                         return React.cloneElement(child, {char})
-//                     })}
-//                 </ul>
-//             </div>
-//         );
-//     }
-// }

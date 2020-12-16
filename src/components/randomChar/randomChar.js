@@ -36,7 +36,7 @@ export default class RandomChar extends Component {
         const id = Math.floor(Math.random() * 2139)
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
-            .catch(this.onError)
+            .catch(() => this.updateCharacter())
     }
 
     render() {
@@ -49,7 +49,7 @@ export default class RandomChar extends Component {
         return (
             <>
 
-                <div className="random-block rounded">
+                <div className="random-block">
                     {errorMessage}
                     {spinner}
                     {content}

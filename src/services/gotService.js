@@ -10,8 +10,8 @@ export default class Service {
         return await res.json()
     }
     
-    getAllBooks = async () => {
-        const books = await this.getData(`/books/`)
+    getAllBooks = async (pageId = 1) => {
+        const books = await this.getData(`/books?page=${pageId}`)
         return books.map(this._transformBook)
     }
     
@@ -20,10 +20,9 @@ export default class Service {
         return this._transformBook(book)
     }
     
-    getAllCharacters = async () => {
-        // max 214
-        const id = await Math.floor(Math.random() * 215)
-        const chars = await this.getData(`/characters?page=${id}`)
+    getAllCharacters = async (pageId = 1) => {
+        // max 2138
+        const chars = await this.getData(`/characters?page=${pageId}`)
         return chars.map(this._transformCharacter)
     }
     
@@ -32,8 +31,9 @@ export default class Service {
         return this._transformCharacter(char)
     }
     
-    getAllHouses = async () => {
-        const houses = await this.getData(`/houses/`)
+    getAllHouses = async (pageId = 1) => {
+        // 444
+        const houses = await this.getData(`/houses/?page=${pageId}`)
         return houses.map(this._transformHouse)
     }
     
@@ -42,7 +42,7 @@ export default class Service {
         return this._transformHouse(house)
     }
     setInfo(info) {
-        return info ? info : 'not indicated'
+        return (info && info.length > 2) ? info : 'Not indicated'
     }
     _getId = (item) => {
         return item.url.match(/[$\d]+/)[0]
@@ -76,7 +76,7 @@ export default class Service {
             name: book.name,
             numberOfPages: this.setInfo(book.numberOfPages),
             publiser: this.setInfo(book.publiser),
-            released: this.setInfo(book.released),
+            released: this.setInfo(new Date(book.released).toLocaleDateString()),
         }
     }
 }
