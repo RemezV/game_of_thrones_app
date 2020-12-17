@@ -38,7 +38,7 @@ class App extends React.Component {
                             onClick={this.toggleRandom}
                         >Random character</button>
                         {randomChar}
-                        <Route path="/characters" exact component={CharactersPage}/>
+                        <Route path="/characters" exact component={CharactersPage || ErrorMessage}/>
                         <Route path="/books" exact component={BooksPage}/>
                         <Route path="/houses" exact component={HousesPage}/>
                     </Container>

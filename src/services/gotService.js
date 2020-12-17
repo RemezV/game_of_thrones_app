@@ -20,7 +20,7 @@ export default class Service {
         return this._transformBook(book)
     }
     
-    getAllCharacters = async (pageId = 1) => {
+    getAllCharacters = async (pageId = 2) => {
         // max 2138
         const chars = await this.getData(`/characters?page=${pageId}`)
         return chars.map(this._transformCharacter)

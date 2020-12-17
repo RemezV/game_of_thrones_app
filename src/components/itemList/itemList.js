@@ -1,13 +1,17 @@
 import React, {Component} from 'react'
 import './itemList.sass'
 import Spinner from '../spinner/spinner'
+import ErrorMessage from '../errorMessage'
 
 export default class ItemList extends Component {
     state = {
         itemList: null,
-        selectedPage: 1
+        selectedPage: 1,
+        error: false
     }
-
+    componentDidCatch() {
+        this.setState({error: true})
+    }
     createItems = (itemList) => {
         if (itemList) {
             return itemList.map((item) => {
@@ -21,8 +25,6 @@ export default class ItemList extends Component {
                     </li>
                 )
             })
-        } else {
-            return <h1>test</h1>
         }
     }
     createItemList = () => {
@@ -34,6 +36,8 @@ export default class ItemList extends Component {
         
     }
     render() {
+        const {itemList, error} = this.state
+        if (error) return <ErrorMessage/>
         if (this.props.selectedPage === 'no such page') {
             return (
                 <ul className="item-list list-group">
@@ -42,9 +46,13 @@ export default class ItemList extends Component {
             )
         }
         this.createItemList()
-        const {itemList} = this.state
+        
 
-        if (!itemList) return <Spinner/>
+        if (!itemList && !error) return (
+            <ul className="item-list list-group">
+                <Spinner/>
+            </ul>
+        )
 
         const items = this.createItems(itemList)
 

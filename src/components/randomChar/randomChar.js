@@ -25,7 +25,7 @@ export default class RandomChar extends Component {
             error: false
         })
     }
-    onError = (err) => {
+    onError = () => {
         this.setState({
             error: true,
             loading: false
@@ -36,7 +36,7 @@ export default class RandomChar extends Component {
         const id = Math.floor(Math.random() * 2139)
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
-            .catch(() => this.updateCharacter())
+            .catch(this.onError)
     }
 
     render() {

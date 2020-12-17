@@ -7,3 +7,31 @@ a
     color: inherit
 .error-block
   height: 60%
+.selected
+  color: red !important
+@media screen and ( max-width: 767px ) 
+  .search-form
+    width: 100%
+    margin-left: 0
+    margin-bottom: 20px
+  #item-search
+    flex: 1
+  .nav-button
+    flex: .75
+@media screen and ( max-width: 575px ) 
+  .header
+    &__block
+      justify-content: space-between
+      height: 80px
+      flex-direction: column
+    &__list
+      margin: 13px 0
+@media screen and ( max-width: 400px )
+  .header
+    &__block
+      flex-direction: column
+    &__list-item
+      margin: 0 10px
+  .nav-btn
+    min-width: 60px
+

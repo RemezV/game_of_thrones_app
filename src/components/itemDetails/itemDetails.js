@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './itemDetails.sass';
 import Service from '../../services/gotService'
 import Spinner from '../spinner/spinner'
+import ErrorMessage from '../errorMessage'
 
 const Field = ({item, field, label}) => {
     return (
@@ -17,7 +18,11 @@ export {Field}
 export default class ItemDetails extends Component {
     state = {
         item: null,
-        loading: true
+        loading: true,
+        error: false
+    }
+    componentDidCatch() {
+
     }
     componentDidMount() {
         this.updateItem()
@@ -45,7 +50,12 @@ export default class ItemDetails extends Component {
 
     }
     render() {
-        const {item, loading} = this.state
+        const {item, loading, error} = this.state
+        if (error) return (
+            <div className="char-details">
+                <ErrorMessage/>
+            </div>
+        )
         if (item === null) return (
             <div className="char-details">
                 <span className="unselected">Not selected</span>
